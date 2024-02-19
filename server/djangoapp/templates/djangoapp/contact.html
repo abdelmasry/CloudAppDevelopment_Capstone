@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Dealership Contact Us</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 1em;
+        text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    .contact-info {
+      margin-bottom: 2rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-form {
+      margin-top: 2rem;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<!-- ...rest of the HTML code... -->
+<body>
+    <header>
+      <h1>Car Dealership Contact Us</h1>
+    </header>
+    <main>
+      <section class="contact-info">
+        <h2>Contact Information</h2>
+        <ul>
+          <li><strong>Address:</strong> 123 Car Street, City, State, Zip</li>
+          <li><strong>Phone:</strong> (123) 456-7890</li>
+          <li><strong>Email:</strong> info@cardealership.com</li>
+        </ul>
+      </section>
+      <section class="contact-form">
+        <h2>Contact Form</h2>
+        <form action="/submit-contact-form" method="post">
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" required>
+          <br>
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" required>
+          <br>
+          <label for="message">Message:</label>
+          <textarea name="message" id="message" rows="5" required></textarea>
+          <br>
+          <input type="submit" value="Submit">
+        </form>
+      </section>
+    </main>
+  </body>
+  </html>
