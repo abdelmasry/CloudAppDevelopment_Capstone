@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <style>
+        #loginForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="toggleLoginForm()">Login</button>
+    <form id="loginForm" style="display: none;">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="button" onclick="login()">Submit</button>
+    </form>
+
+    <script>
+        let loginFormVisible = false;
+
+        function toggleLoginForm() {
+            const loginForm = document.getElementById("loginForm");
+            loginFormVisible = !loginFormVisible;
+            if (loginFormVisible) {
+                loginForm.style.display = "block";
+            } else {
+                loginForm.style.display = "none";
+            }
+        }
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Perform login process here, for demonstration purpose, simply log the credentials.
+            console.log("Username:", username);
+            console.log("Password:", password);
+
+            // Reset form and hide it after login
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("loginForm").style.display = "none";
+            loginFormVisible = false;
+        }
+    </script>
+</body>
+</html>
