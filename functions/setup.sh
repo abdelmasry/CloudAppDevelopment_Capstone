@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Install Python 3.9
+# Install Python 3.8
 sudo apt-get update
-sudo apt-get install -y python3.9 python3.9-distutils
+sudo apt-get install -y python3.8 python3.8-distutils
 
 # Upgrade pip
-/usr/bin/python3.9 -m pip install --upgrade pip
+/Users/abdelrahmanibrahim/miniconda/bin/python -m pip install --upgrade pip
 
 # Install Cloudant
-/usr/bin/python3.9 -m pip install Cloudant
+/Users/abdelrahmanibrahim/miniconda/bin/python -m pip install Cloudant
 
 # Install Flask
-/usr/bin/python3.9 -m pip install Flask
+/Users/abdelrahmanibrahim/miniconda/bin/python -m pip install Flask
