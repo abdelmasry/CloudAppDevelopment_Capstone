@@ -1,12 +1,14 @@
 from cloudant.client import Cloudant
 from cloudant.query import Query
 from flask import Flask, abort, jsonify, request
+from utils import load_credentials
 import atexit
 
-#Add your Cloudant service credentials here
-cloudant_username = '2d7d8f75-99bf-4299-acb3-50129e26a578-bluemix'
-cloudant_api_key = 'AFaAVHgTrR69AS6vBWVqMlkVdrCZe1jBG9wEeZ1FfB8T'
-cloudant_url = 'https://2d7d8f75-99bf-4299-acb3-50129e26a578-bluemix.cloudantnosqldb.appdomain.cloud'
+# Add your Cloudant service credentials here
+credentials: dict = load_credentials("./Config/Cloudant.json")
+cloudant_username = credentials["cloudant_username"]
+cloudant_api_key = credentials["apiKey"]
+cloudant_url = credentials["url"]
 client = Cloudant.iam(cloudant_username, cloudant_api_key, connect=True, url=cloudant_url)
 
 session = client.session()
@@ -15,6 +17,8 @@ print('Databases:', client.all_dbs())
 db = client['reviews']
 
 app = Flask(__name__)
+gen_id = 1000
+
 
 @app.route('/api/get_reviews', methods=['GET'])
 def get_reviews():
@@ -52,8 +56,8 @@ def get_reviews():
 @app.route('/api/post_review', methods=['POST'])
 def post_review():
     if not request.json:
-        abort(400, description='Invalid JSON data')
-    
+        return 'Invalid JSON data'
+
     # Extract review data from the request JSON
     review_data = request.json
 
@@ -61,12 +65,21 @@ def post_review():
     required_fields = ['name', 'dealership', 'review', 'purchase']
     for field in required_fields:
         if field not in review_data:
-            abort(400, description=f'Missing required field: {field}')
-
+            return f'Missing required field: {field}'
+    
+    # this actually fucking worked
+    idd = gen_id + 1
+    review_data["id"] = idd
+    review_data["purchase_date"] = None
+    review_data["car_make"] = "None"
+    review_data["car_year"] = "None"
+    review_data["car_model"] = "None"
+    
     # Save the review data as a new document in the Cloudant database
     db.create_document(review_data)
 
     return jsonify({"message": "Review posted successfully"}), 201
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

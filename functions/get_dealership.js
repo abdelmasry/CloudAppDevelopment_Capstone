@@ -2,13 +2,25 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const Cloudant = require('@cloudant/cloudant');
+const path = require('path');
+
+function load_credentials(filePath) {
+    try {
+        const config = require(filePath);
+        return config;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 // Initialize Cloudant connection with IAM authentication
 async function dbCloudantConnect() {
     try {
+        const config = load_credentials(path.resolve(__dirname, '../Config/Cloudant.json'));
         const cloudant = Cloudant({
-            plugins: { iamauth: { iamApiKey: 'AFaAVHgTrR69AS6vBWVqMlkVdrCZe1jBG9wEeZ1FfB8T' } }, // Replace with your IAM API key
-            url: 'https://2d7d8f75-99bf-4299-acb3-50129e26a578-bluemix.cloudantnosqldb.appdomain.cloud', // Replace with your Cloudant URL
+            plugins: {iamauth: {iamApiKey: config["apiKey"]}},
+            url: config["url"],
         });
 
         const db = cloudant.use('dealerships');
@@ -20,6 +32,7 @@ async function dbCloudantConnect() {
     }
 }
 
+
 let db;
 
 (async () => {
@@ -30,14 +43,14 @@ app.use(express.json());
 
 // Define a route to get all dealerships with optional state and ID filters
 app.get('/dealerships/get', (req, res) => {
-    const { state, id } = req.query;
+    const {state, id} = req.query;
 
     // Create a selector object based on query parameters
     const selector = {};
     if (state) {
         selector.state = state;
     }
-    
+
     if (id) {
         selector.id = parseInt(id); // Filter by "id" with a value of 1
     }
@@ -50,7 +63,7 @@ app.get('/dealerships/get', (req, res) => {
     db.find(queryOptions, (err, body) => {
         if (err) {
             console.error('Error fetching dealerships:', err);
-            res.status(500).json({ error: 'An error occurred while fetching dealerships.' });
+            res.status(500).json({error: 'An error occurred while fetching dealerships.'});
         } else {
             const dealerships = body.docs;
             res.json(dealerships);
